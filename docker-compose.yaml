@@ -57,11 +57,14 @@ services:
     networks:
       - laravel
     restart: unless-stopped
-    # If you need Redis authentication, uncomment the following:
-    # command: redis-server --requirepass ${REDIS_PASSWORD}
 
   php-fpm:
-    build: docker/php-fpm
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+      args:
+        - USER_ID=${UID:-1000}
+        - GROUP_ID=${GID:-1000}
     volumes:
       - './:/var/www/html'
       - './docker/php-fpm/php-ini-overrides.ini:/etc/php/8.2/fpm/conf.d/99-overrides.ini'
