@@ -2,7 +2,6 @@ networks:
   laravel:
 
 volumes:
-  # postgresdb:
   mongodb:
 
 services:
@@ -17,7 +16,6 @@ services:
       - php-fpm
       - redis
       - mongo
-      # - postgres
     networks:
       - laravel
     restart: unless-stopped
@@ -43,20 +41,6 @@ services:
     networks:
       - laravel
     restart: unless-stopped
-
-  # postgres:
-  #   image: postgres:15-alpine
-  #   restart: unless-stopped
-  #   ports:
-  #     - '5432:5432'
-  #   volumes:
-  #     - 'postgresdb:/var/lib/postgresql/data'
-  #   environment:
-  #     - POSTGRES_USER=${DB_USERNAME}
-  #     - POSTGRES_PASSWORD=${DB_PASSWORD}
-  #     - POSTGRES_DB=${DB_DATABASE}
-  #   networks:
-  #     - laravel
 
   mongo:
     image: mongo:latest
