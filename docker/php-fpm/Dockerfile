@@ -40,13 +40,13 @@ ARG USER_ID=1000
 ARG GROUP_ID=1000
 RUN usermod -u ${USER_ID} www-data && groupmod -g ${GROUP_ID} www-data
 
+# Set entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
 # Change ownership of the working directory
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www
 
 # Switch to non-root user
 USER www-data
-
-# Set entrypoint
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 EXPOSE 9000
