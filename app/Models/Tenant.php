@@ -2,25 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use MongoDB\Laravel\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use MongoDB\Laravel\Eloquent\Model;
 
-/**
- * @property int $id
- * @property string $name
- * @property string $email
- * @property string $password
- * @property string $remember_token
- * @property \Illuminate\Support\Carbon $email_verified_at
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
- */
-class User extends Authenticatable
+class Tenant extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -29,7 +17,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
         'password',
     ];
 
@@ -40,7 +27,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -51,8 +37,17 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * The users that belong to the Tenant
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, TenantUser::class);
     }
 }
