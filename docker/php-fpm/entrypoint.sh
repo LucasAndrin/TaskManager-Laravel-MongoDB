@@ -1,7 +1,3 @@
-#!/bin/bash
-
-cd /var/www/html
-
 # Check if composer.json exists
 if [ -f composer.json ]; then
     composer install --no-interaction --optimize-autoloader

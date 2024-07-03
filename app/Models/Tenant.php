@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\Database\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use MongoDB\Laravel\Eloquent\Model;
+use MongoDB\Laravel\Relations\HasMany;
 
 class Tenant extends Model
 {
     use HasFactory;
+    use BelongsToTenant;
 
     /**
      * The attributes that are mass assignable.
@@ -42,12 +44,12 @@ class Tenant extends Model
     }
 
     /**
-     * The users that belong to the Tenant
+     * Get all of the tenantUsers for the Tenant
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \MongoDB\Laravel\Relations\HasMany
      */
-    public function users(): BelongsToMany
+    public function tenantUsers(): HasMany
     {
-        return $this->belongsToMany(User::class, TenantUser::class);
+        return $this->hasMany(TenantUser::class);
     }
 }

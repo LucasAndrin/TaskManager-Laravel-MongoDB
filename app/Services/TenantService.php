@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Repositories\TenantRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
 
 class TenantService
 {
@@ -17,7 +16,9 @@ class TenantService
     {
         $tenant = $this->tenants->create($tenantData);
 
-        $tenant->users()->attach($user->id);
+        $tenant->tenantUsers()->create([
+            'user_id' => $user->id
+        ]);
 
         return $tenant;
     }

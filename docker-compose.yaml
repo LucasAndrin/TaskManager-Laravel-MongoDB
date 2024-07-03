@@ -25,8 +25,8 @@ services:
       context: .
       dockerfile: docker/php-fpm/Dockerfile
       args:
-        - USER_ID=${UID:-1000}
-        - GROUP_ID=${GID:-1000}
+        - user=lucasandrin
+        - uid=1000
     volumes:
       - './:/var/www/html'
       - './docker/php-fpm/php-ini-overrides.ini:/etc/php/8.2/fpm/conf.d/99-overrides.ini'

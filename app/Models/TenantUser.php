@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\Database\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
+use MongoDB\Laravel\Relations\BelongsTo;
 
 class TenantUser extends Model
 {
     use HasFactory, SoftDeletes;
+    use BelongsToTenant;
 
     /**
      * The attributes that are mass assignable.
@@ -24,20 +26,10 @@ class TenantUser extends Model
     /**
      * Get the user that owns the TenantUser
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \MongoDB\Laravel\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Get the tenant that owns the TenantUser
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(Tenant::class);
     }
 }
