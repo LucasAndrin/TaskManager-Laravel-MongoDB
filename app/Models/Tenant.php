@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\Database\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Relations\HasMany;
@@ -10,7 +9,6 @@ use MongoDB\Laravel\Relations\HasMany;
 class Tenant extends Model
 {
     use HasFactory;
-    use BelongsToTenant;
 
     /**
      * The attributes that are mass assignable.
