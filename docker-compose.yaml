@@ -25,7 +25,7 @@ services:
       context: .
       dockerfile: docker/php-fpm/Dockerfile
       args:
-        - user=lucasandrin
+        - user=${APP_USER}
         - uid=1000
     volumes:
       - './:/var/www/html'

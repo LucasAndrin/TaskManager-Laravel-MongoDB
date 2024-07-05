@@ -34,6 +34,8 @@ class AuthController extends Controller
             $request->device
         );
 
-        return response()->json($token);
+        return response()->json([
+            'token' => $token
+        ]);
     }
 }

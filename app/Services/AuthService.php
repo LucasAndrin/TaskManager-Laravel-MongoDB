@@ -15,10 +15,10 @@ class AuthService
 
     public function register(string $name, string $email, string $password): ?User
     {
-        return User::create([
+        return $this->users->create([
             'name'=> $name,
             'email' => $email,
-            'password' => Hash::make($password)
+            'password' => $password
         ]);
     }
 
