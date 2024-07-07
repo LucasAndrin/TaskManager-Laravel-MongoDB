@@ -18,7 +18,9 @@ class TenantController extends Controller
      */
     public function index(Request $request)
     {
+        $tenants = $this->service->index($request->user());
 
+        return response()->json($tenants);
     }
 
     /**
@@ -30,6 +32,7 @@ class TenantController extends Controller
             $request->user(),
             $request->only([
                 'name',
+                'domain',
                 'password',
             ])
         );

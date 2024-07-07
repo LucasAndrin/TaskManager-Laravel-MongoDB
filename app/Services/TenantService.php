@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Repositories\TenantRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class TenantService
 {
@@ -12,13 +13,25 @@ class TenantService
         protected TenantRepositoryInterface $tenants
     ) { }
 
+    public function index(User $user): Collection
+    {
+        return $this->tenants->getByUserId($user->id);
+    }
+
     public function store(User $user, array $tenantData): Tenant
     {
         $tenant = $this->tenants->create($tenantData);
 
-        $tenant->tenantUsers()->create([
+        $role = $this->tenants->createRole($tenant, [
+            'name' => 'Admin',
+            'alias' => 'admin'
+        ]);
+
+        $pivotUser = $this->tenants->createPivotUser($tenant, [
             'user_id' => $user->id
         ]);
+
+        $pivotUser->roles()->attach($role);
 
         return $tenant;
     }

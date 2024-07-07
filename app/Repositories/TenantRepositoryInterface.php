@@ -2,12 +2,23 @@
 
 namespace App\Repositories;
 
+use App\Models\Role;
 use App\Models\Tenant;
+use App\Models\TenantUser;
+use Illuminate\Database\Eloquent\Collection;
 
 interface TenantRepositoryInterface
 {
-    public function find(int $id): ?Tenant;
-    public function create(array $data): ?Tenant;
-    public function update(int $id, array $data): int;
-    public function delete(int $id): int;
+    public function getByUserId(string $userId): Collection;
+
+    public function find(string $tenantId): ?Tenant;
+    public function create(array $data): Tenant;
+    public function update(string $tenantId, array $data): int;
+    public function delete(string $tenantId): int;
+
+    /**
+     * Relations queries
+     */
+    public function createRole(Tenant $tenant, array $data): Role;
+    public function createPivotUser(Tenant $tenant, array $data): TenantUser;
 }

@@ -15,6 +15,7 @@ class StoreTenantRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3'],
+            'domain' => ['required', 'string', 'unique:tenants,domain'],
             'password' => ['required', 'string'],
             'password_confirmation' => ['required', 'string', 'same:password'],
         ];

@@ -2,8 +2,11 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Models\Role;
 use App\Models\Tenant;
+use App\Models\TenantUser;
 use App\Repositories\TenantRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class TenantRepository implements TenantRepositoryInterface
 {
@@ -11,23 +14,38 @@ class TenantRepository implements TenantRepositoryInterface
         protected Tenant $model
     ) { }
 
-    public function find(int $id): ?Tenant
+    public function getByUserId(string $userId): Collection
     {
-        return $this->model->find($id);
+        return $this->model->userId($userId)->get();
     }
 
-    public function create(array $data): ?Tenant
+    public function find(string $tenantId): ?Tenant
+    {
+        return $this->model->find($tenantId);
+    }
+
+    public function create(array $data): Tenant
     {
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): int
+    public function update(string $tenantId, array $data): int
     {
-        return $this->model->where('id', $id)->update($data);
+        return $this->model->where('id', $tenantId)->update($data);
     }
 
-    public function delete(int $id): int
+    public function delete(string $tenantId): int
     {
-        return $this->model->where('id', $id)->delete();
+        return $this->model->where('id', $tenantId)->delete();
+    }
+
+    public function createRole(Tenant $tenant, array $data): Role
+    {
+        return $tenant->roles()->create($data);
+    }
+
+    public function createPivotUser(Tenant $tenant, array $data): TenantUser
+    {
+        return $tenant->pivotUsers()->create($data);
     }
 }

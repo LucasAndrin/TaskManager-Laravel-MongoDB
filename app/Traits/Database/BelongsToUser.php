@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Traits\Database;
 
 use App\Models\User;
 use MongoDB\Laravel\Relations\BelongsTo;

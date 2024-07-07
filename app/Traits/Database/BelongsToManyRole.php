@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Traits\Database;
 
 use App\Models\Role;
 use MongoDB\Laravel\Relations\BelongsToMany;

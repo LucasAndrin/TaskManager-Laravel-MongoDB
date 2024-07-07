@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Tenant::class)->index();
-            $table->string('alias')->index();
-            $table->string('name');
+            $table->string('name')->unique();
+            $table->string('alias')->unique();
             $table->text('description')->nullable();
             $table->timestamps();
         });
