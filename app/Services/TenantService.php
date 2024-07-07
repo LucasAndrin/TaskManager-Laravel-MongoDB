@@ -15,7 +15,7 @@ class TenantService
 
     public function index(User $user): Collection
     {
-        return $this->tenants->getByUserId($user->id);
+        return $this->tenants->getFromUserId($user->id);
     }
 
     public function store(User $user, array $tenantData): Tenant
@@ -36,18 +36,28 @@ class TenantService
         return $tenant;
     }
 
-    public function show(User $user, int $tenantId): Tenant
+    public function show(User $user, string $tenantId): Tenant
     {
-        return $this->tenants->find($tenantId);
+        return $this->tenants->findFromUserId(
+            $tenantId,
+            $user->id
+        );
     }
 
-    public function update(User $user, int $tenantId, array $tenantData): int
+    public function update(User $user, string $tenantId, array $tenantData): int
     {
-        return $this->tenants->update($tenantId, $tenantData);
+        return $this->tenants->updateFromUserId(
+            $tenantId,
+            $user->id,
+            $tenantData
+        );
     }
 
-    public function destroy(User $user, int $tenantId): int
+    public function destroy(User $user, string $tenantId): int
     {
-        return $this->tenants->delete($tenantId);
+        return $this->tenants->deleteFromUserId(
+            $tenantId,
+            $user->id
+        );
     }
 }

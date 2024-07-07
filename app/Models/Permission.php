@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\Database\BelongsToManyRole;
+use App\Traits\Database\Relations\BelongsToManyRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Traits\Database\BelongsToManyPermission;
-use App\Traits\Database\BelongsToManyRole;
-use App\Traits\Database\BelongsToUser;
-use App\Traits\Database\BelongsToTenant;
+use App\Traits\Database\Relations\BelongsToManyPermission;
+use App\Traits\Database\Relations\BelongsToManyRole;
+use App\Traits\Database\Relations\BelongsToUser;
+use App\Traits\Database\Relations\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;

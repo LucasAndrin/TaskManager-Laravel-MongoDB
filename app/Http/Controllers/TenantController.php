@@ -43,7 +43,7 @@ class TenantController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, int $tenantId)
+    public function show(Request $request, string $tenantId)
     {
         $tenant = $this->service->show(
             $request->user(),
@@ -56,13 +56,14 @@ class TenantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $tenantId)
+    public function update(Request $request, string $tenantId)
     {
         $affectedRows = $this->service->update(
             $request->user(),
             $tenantId,
             $request->only([
                 'name',
+                'domain',
             ])
         );
 
@@ -72,7 +73,7 @@ class TenantController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, int $tenantId)
+    public function destroy(Request $request, string $tenantId)
     {
         $affectedRows = $this->service->destroy($request->user(), $tenantId);
 

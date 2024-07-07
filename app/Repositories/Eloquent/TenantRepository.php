@@ -7,6 +7,7 @@ use App\Models\Tenant;
 use App\Models\TenantUser;
 use App\Repositories\TenantRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use MongoDB\Laravel\Eloquent\Builder;
 
 class TenantRepository implements TenantRepositoryInterface
 {
@@ -14,10 +15,19 @@ class TenantRepository implements TenantRepositoryInterface
         protected Tenant $model
     ) { }
 
-    public function getByUserId(string $userId): Collection
+    /**
+     * Builders
+     */
+    public function byId(string $tenantId): Builder
     {
-        return $this->model->userId($userId)->get();
+        return $this->model->id($tenantId);
     }
+
+    public function byIdFromUserId(string $tenantId, string $userId): Builder
+    {
+        return $this->byId($tenantId)->userId($userId);
+    }
+
 
     public function find(string $tenantId): ?Tenant
     {
@@ -31,13 +41,44 @@ class TenantRepository implements TenantRepositoryInterface
 
     public function update(string $tenantId, array $data): int
     {
-        return $this->model->where('id', $tenantId)->update($data);
+        return $this->byId($tenantId)->update($data);
     }
 
     public function delete(string $tenantId): int
     {
-        return $this->model->where('id', $tenantId)->delete();
+        return $this->byId($tenantId)->delete();
     }
+
+    /**
+     * Scoped by Auth User
+     */
+
+    public function getFromUserId(string $userId): Collection
+    {
+        return $this->model->userId($userId)->get();
+    }
+
+    public function findFromUserId(string $tenantId, string $userId): ?Tenant
+    {
+        return $this->model->userId($userId)->find($tenantId);
+    }
+
+    public function updateFromUserId(string $tenantId, string $userId, array $data): int
+    {
+        return $this->byIdFromUserId($tenantId, $userId)
+            ->update($data);
+    }
+
+    public function deleteFromUserId(string $tenantId, string $userId): int
+    {
+        return $this->byIdFromUserId($tenantId, $userId)
+            ->delete();
+    }
+
+
+    /**
+     * Relations
+     */
 
     public function createRole(Tenant $tenant, array $data): Role
     {
