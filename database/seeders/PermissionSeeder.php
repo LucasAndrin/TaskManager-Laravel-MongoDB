@@ -43,11 +43,13 @@ class PermissionSeeder extends Seeder
 
         Permission::factory()->createMany(
             $resources->flatMap(function (Collection $actions, string $resource) {
-                return $actions->map(fn (string $description, string $action) => [
-                    'name' => ucfirst($resource).' '.ucfirst($action),
-                    'alias' => $resource.'.'.$action,
-                    'description' => $description
-                ]);
+                return $actions->map(function (string $description, string $action) use ($resource) {
+                    return [
+                        'name' => ucfirst($resource).' '.ucfirst($action),
+                        'alias' => $resource.'.'.$action,
+                        'description' => $description
+                    ];
+                })->values();
             })->toArray()
         );
     }
