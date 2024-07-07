@@ -27,11 +27,10 @@ class TenantService
             'alias' => 'admin'
         ]);
 
-        $pivotUser = $this->tenants->createPivotUser($tenant, [
-            'user_id' => $user->id
+        $this->tenants->createPivotUser($tenant, [
+            'user_id' => $user->id,
+            'role_ids' => [$role->id]
         ]);
-
-        $pivotUser->roles()->attach($role);
 
         return $tenant;
     }

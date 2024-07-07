@@ -6,8 +6,8 @@ use App\Http\Middleware\TenantMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::middleware(TenantMiddleware::class)->get('/', function () {
-        dd('foi');
+    Route::middleware(TenantMiddleware::class)->group(function () {
+
     });
 
     Route::apiResource('tenants', TenantController::class);

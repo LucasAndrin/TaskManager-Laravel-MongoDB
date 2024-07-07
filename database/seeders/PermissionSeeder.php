@@ -14,14 +14,39 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $resources = collect([
-            'tasks' => collect(['list', 'show', 'store', 'update', 'destroy', 'assign', 'perform'])
+            'permissios' => collect([
+                'view' => 'Can see available permissions',
+                'attach' => 'Can attach permissions to roles',
+                'assign' => 'Can assign permissions to users',
+            ]),
+            'users' => collect([
+                'view' => 'Can view tenant users',
+                'invite' => 'Can invite users to the tenant',
+                'destroy' => 'Can delete tenant users',
+            ]),
+            'roles' => collect([
+                'view' => 'Can view tenant roles',
+                'store' => 'Can store tenant roles',
+                'update' => 'Can update tenant roles',
+                'assign' => 'Can assign tenant roles',
+                'destroy' => 'Can destroy tenant roles',
+            ]),
+            'tasks' => collect([
+                'view' => 'Can view tasks',
+                'store' => 'Can store tasks',
+                'update' => 'Can update tasks',
+                'assign' => 'Can assign tasks',
+                'destroy' => 'Can destroy tasks',
+                'perform' => 'Can perform tasks'
+            ])
         ]);
 
         Permission::factory()->createMany(
             $resources->flatMap(function (Collection $actions, string $resource) {
-                return $actions->map(fn (string $action) => [
+                return $actions->map(fn (string $description, string $action) => [
                     'name' => ucfirst($resource).' '.ucfirst($action),
-                    'alias' => $resource.'.'.$action
+                    'alias' => $resource.'.'.$action,
+                    'description' => $description
                 ]);
             })->toArray()
         );
