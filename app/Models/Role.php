@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Database\Relations\BelongsToManyPermission;
-use App\Traits\Database\Relations\BelongsToManyUser;
+use App\Traits\Database\Relations\BelongsToManyTenantUser;
 use App\Traits\Database\Relations\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Builder;
@@ -22,7 +22,7 @@ class Role extends Model
 {
     use HasFactory;
     use BelongsToTenant;
-    use BelongsToManyUser;
+    use BelongsToManyTenantUser;
     use BelongsToManyPermission;
 
     /**
@@ -36,6 +36,18 @@ class Role extends Model
         'alias',
         'description',
     ];
+
+    /**
+     * Filter role by its alias
+     *
+     * @param Builder $query
+     * @param string $alias
+     * @return void
+     */
+    public function scopeAlias(Builder $query, string $alias): void
+    {
+        $query->where('alias', $alias);
+    }
 
     public function scopePermissionAlias(Builder $query, string $alias): void
     {

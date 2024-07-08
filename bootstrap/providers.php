@@ -2,6 +2,6 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\AuthTenantServiceProvider::class,
+    App\Providers\PolicyServiceProvider::class,
     MongoDB\Laravel\MongoDBServiceProvider::class,
 ];

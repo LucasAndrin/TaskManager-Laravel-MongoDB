@@ -2,19 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTenantRequest;
+use App\Http\Requests\Tenant\DestroyTenantRequest;
+use App\Http\Requests\Tenant\StoreTenantRequest;
+use App\Http\Requests\Tenant\UpdateTenantRequest;
 use App\Services\TenantService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TenantController extends Controller
 {
-    public function __construct(
-        protected TenantService $service
-    ) { }
+    protected TenantService $service;
+
+    public function __construct(TenantService $service) {
+        $this->service = $service;
+    }
 
     /**
-     * Display a listing of the resource.
+     * List user tenants
+     *
+     * @param Request $request
+     * @return void
      */
     public function index(Request $request)
     {
@@ -24,7 +31,10 @@ class TenantController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store user tenant
+     *
+     * @param StoreTenantRequest $request
+     * @return JsonResponse
      */
     public function store(StoreTenantRequest $request): JsonResponse
     {
@@ -41,7 +51,11 @@ class TenantController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Show user tenant
+     *
+     * @param Request $request
+     * @param string $tenantId
+     * @return void
      */
     public function show(Request $request, string $tenantId)
     {
@@ -54,29 +68,42 @@ class TenantController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update user tenant
+     *
+     * @param UpdateTenantRequest $request
+     * @param string $tenantId
+     * @return void
      */
-    public function update(Request $request, string $tenantId)
+    public function update(UpdateTenantRequest $request, string $tenantId)
     {
-        $affectedRows = $this->service->update(
+        $updated = $this->service->update(
             $request->user(),
-            $tenantId,
+            $request->input('password'),
             $request->only([
                 'name',
                 'domain',
-            ])
+            ]),
+            $tenantId
         );
 
-        return response()->json($affectedRows);
+        return response()->json($updated);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Destroy user tenant
+     *
+     * @param Request $request
+     * @param string $tenantId
+     * @return void
      */
-    public function destroy(Request $request, string $tenantId)
+    public function destroy(DestroyTenantRequest $request, string $tenantId)
     {
-        $affectedRows = $this->service->destroy($request->user(), $tenantId);
+        $destroyed = $this->service->destroy(
+            $request->user(),
+            $request->input('password'),
+            $tenantId
+        );
 
-        return response()->json($affectedRows);
+        return response()->json($destroyed);
     }
 }

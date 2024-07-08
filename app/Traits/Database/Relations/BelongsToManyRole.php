@@ -9,6 +9,7 @@ use MongoDB\Laravel\Relations\BelongsToMany;
 /**
  * @property array<int, string> $role_ids
  * @method \MongoDB\Laravel\Eloquent\Builder roleIds(array $roleIds)
+ * @method \MongoDB\Laravel\Eloquent\Builder roleAlias(array $alias)
  */
 trait BelongsToManyRole
 {
@@ -32,5 +33,17 @@ trait BelongsToManyRole
     public function scopeRoleIds(Builder $query, array $roleIds): void
     {
         $query->where('role_ids', $roleIds);
+    }
+
+    /**
+     * Filter the model by role alias
+     *
+     * @param Builder $query
+     * @param string $alias
+     * @return void
+     */
+    public function scopeRoleAlias(Builder $query, string $alias): void
+    {
+        $query->whereRelation('roles', 'alias', $alias);
     }
 }

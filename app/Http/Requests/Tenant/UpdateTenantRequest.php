@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Role;
+namespace App\Http\Requests\Tenant;
 
-use App\Traits\TenantRequestTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRoleRequest extends FormRequest
+class UpdateTenantRequest extends FormRequest
 {
-    use TenantRequestTrait;
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -18,8 +15,8 @@ class UpdateRoleRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3'],
-            'alias' => ['required', 'string', 'min:3'],
-            'description' => ['nullable', 'string'],
+            'domain' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ];
     }
 }

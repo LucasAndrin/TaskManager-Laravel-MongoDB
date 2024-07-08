@@ -3,27 +3,45 @@
 namespace App\Services;
 
 use App\Models\Permission;
+use App\Models\Role;
 use App\Models\Tenant;
 use App\Models\User;
-use App\Repositories\TenantRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class TenantService
 {
-    public function __construct(
-        protected TenantRepositoryInterface $tenants
-    ) { }
-
+    /**
+     * List all tenants of related user
+     *
+     * @param User $user
+     * @return Collection
+     */
     public function index(User $user): Collection
     {
-        return $this->tenants->getFromUserId($user->id);
+        return Tenant::userId($user->id)->get();
     }
 
+    /**
+     * Store tenant of related user
+     *
+     * @param User $user
+     * @param array $tenantData
+     * @return Tenant
+     */
     public function store(User $user, array $tenantData): Tenant
     {
-        $tenant = $this->tenants->create($tenantData);
+        /**
+         * @var Tenant
+         */
+        $tenant = Tenant::create($tenantData);
 
-        $role = $this->tenants->createRole($tenant, [
+        /**
+         * @var Role
+         */
+        $role = $tenant->roles()->create([
             'name' => 'Admin',
             'alias' => 'admin'
         ]);
@@ -32,7 +50,10 @@ class TenantService
             Permission::pluck('_id')->toArray()
         );
 
-        $pivotUser = $this->tenants->createPivotUser($tenant, [
+        /**
+         * @var TenantUser
+         */
+        $pivotUser = $tenant->pivotUsers()->create([
             'user_id' => $user->id,
         ]);
 
@@ -41,28 +62,58 @@ class TenantService
         return $tenant;
     }
 
+    /**
+     * Show tenant of related user
+     *
+     * @param User $user
+     * @param string $tenantId
+     * @return Tenant
+     */
     public function show(User $user, string $tenantId): Tenant
     {
-        return $this->tenants->findFromUserId(
-            $tenantId,
-            $user->id
-        );
+        return Tenant::userId($user->id)->findOrFail($tenantId);
     }
 
-    public function update(User $user, string $tenantId, array $tenantData): int
+    /**
+     * Update tenant of related user
+     *
+     * @param User $user
+     * @param string $password
+     * @param array $tenantData
+     * @param string $tenantId
+     * @return boolean
+     */
+    public function update(User $user, string $password, array $tenantData, string $tenantId): bool
     {
-        return $this->tenants->updateFromUserId(
-            $tenantId,
-            $user->id,
-            $tenantData
-        );
+        $tenant = $this->show($user, $tenantId);
+
+        Gate::forUser($user)->authorize('update', $tenant);
+
+        $this->checkPassword($tenant, $password);
+
+        return $tenant->update($tenantData);
     }
 
-    public function destroy(User $user, string $tenantId): int
+    public function destroy(User $user, string $password, string $tenantId): bool
     {
-        return $this->tenants->deleteFromUserId(
-            $tenantId,
-            $user->id
-        );
+        $tenant = $this->show($user, $tenantId);
+
+        Gate::forUser($user)->authorize('destroy', $tenant);
+
+        $this->checkPassword($tenant, $password);
+
+        $tenant->roles()->delete();
+        $tenant->pivotUsers()->forceDelete();
+
+        return $tenant->delete();
+    }
+
+    public function checkPassword(Tenant $tenant, string $password)
+    {
+        if (! Hash::check($password, $tenant->password)) {
+            throw ValidationException::withMessages([
+                'message' => 'The provided credentials are incorrect',
+            ]);
+        }
     }
 }

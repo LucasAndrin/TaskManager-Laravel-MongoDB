@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Tenant;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -15,7 +15,7 @@ class StoreTenantRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3'],
-            'domain' => ['required', 'string', 'unique:tenants,domain'],
+            'domain' => ['required', 'string'],
             'password' => ['required', 'string'],
             'password_confirmation' => ['required', 'string', 'same:password'],
         ];

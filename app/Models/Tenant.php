@@ -48,7 +48,7 @@ class Tenant extends Model
     /**
      * Get all of the tenantUsers for the Tenant
      *
-     * @return \MongoDB\Laravel\Relations\HasMany
+     * @return HasMany
      */
     public function pivotUsers(): HasMany
     {
@@ -58,11 +58,21 @@ class Tenant extends Model
     /**
      * Get all of the roles for the Tenant
      *
-     * @return \MongoDB\Laravel\Relations\HasMany
+     * @return HasMany
      */
     public function roles(): HasMany
     {
         return $this->hasMany(Role::class);
+    }
+
+    /**
+     * Get all of the roles for the Tenant, except admin
+     *
+     * @return HasMany
+     */
+    public function secureRoles(): HasMany
+    {
+        return $this->roles()->whereNot('alias', 'admin');
     }
 
     /**

@@ -68,13 +68,13 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if auth user has permission by it alias
+     * Check if user has permission by alias
      *
      * @param string $alias permission alias
-     * @param null|integer|string|null $tenantId
+     * @param null|string $tenantId
      * @return boolean
      */
-    public function hasPermission(string $alias, null|int|string $tenantId = null)
+    public function hasPermission(string $alias, ?string $tenantId = null)
     {
         if (! $tenantId) {
             $tenantId = request()->header('X-Tenant-ID');
@@ -83,6 +83,25 @@ class User extends Authenticatable
         return $this->pivotTenants()
             ->permissionAlias($alias)
             ->tenantId($tenantId)
+            ->exists();
+    }
+
+    /**
+     * Check if user has role by alias
+     *
+     * @param string $alias
+     * @param string|null $tenantId
+     * @return boolean
+     */
+    public function hasRole(string $alias, ?string $tenantId = null)
+    {
+        if (! $tenantId) {
+            $tenantId = request()->header('X-Tenant-ID');
+        }
+
+        return $this->pivotTenants()
+            ->tenantId($tenantId)
+            ->roleAlias($alias)
             ->exists();
     }
 }

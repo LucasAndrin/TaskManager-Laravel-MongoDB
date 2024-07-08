@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Role;
 use App\Models\Tenant;
+use App\Models\TenantUser;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Gate;
@@ -75,7 +76,7 @@ class RoleService
         /**
          * @var Role
          */
-        $role = $tenant->roles()->findOrFail($roleId);
+        $role = $tenant->secureRoles()->findOrFail($roleId);
 
         return $role->update($roleData);
     }
@@ -93,13 +94,13 @@ class RoleService
     {
         Gate::forUser($user)->authorize('destroy', Role::class);
 
-        return $tenant->roles()->destroy($roleId);
+        return $tenant->secureRoles()->destroy($roleId);
     }
 
     /**
      * Check if user can assign a role to users,
-     * attach the role to related users and
-     * dettach the it to non related users
+     * attach the role for related users and
+     * dettach the role for non related users
      *
      * @param User $user
      * @param Tenant $tenant
@@ -116,13 +117,22 @@ class RoleService
          */
         $role = $tenant->roles()->findOrFail($roleId);
 
-        return $role->users()->sync($userIds);
+        /**
+         * @var Collection<int, TenantUser>
+         */
+        $pivotUserIds = $tenant->pivotUsers()
+            ->userIds($userIds)
+            ->pluck('_id');
+
+        return $role->tenantUsers()->sync(
+            $pivotUserIds->toArray()
+        );
     }
 
     /**
      * Check if user can allow permissions to a role,
      * attach related permissions to the role and
-     * dettach non related permissions to it
+     * dettach non related permissions to the role
      *
      * @param User $user
      * @param Tenant $tenant
@@ -137,7 +147,7 @@ class RoleService
         /**
          * @var Role
          */
-        $role = $tenant->roles()->findOrFail($roleId);
+        $role = $tenant->secureRoles()->findOrFail($roleId);
 
         return $role->permissions()->sync($permissionIds);
     }
