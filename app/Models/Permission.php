@@ -18,6 +18,8 @@ class Permission extends Model
     use HasFactory;
     use BelongsToManyRole;
 
+    protected $hidden = ['role_ids'];
+
     public $timestamps = false;
 
     /**

@@ -18,9 +18,8 @@ class PermissionSeeder extends Seeder
                 'view' => 'Can see available permissions',
             ]),
             'users' => collect([
-                'view' => 'Can view tenant users',
-                'invite' => 'Can invite users to the tenant',
-                'destroy' => 'Can delete tenant users',
+                'add' => 'Can add users to the tenant',
+                'remove' => 'Can remove tenant users',
             ]),
             'roles' => collect([
                 'view' => 'Can view tenant roles',
