@@ -16,7 +16,6 @@ class PermissionSeeder extends Seeder
         $resources = collect([
             'permissios' => collect([
                 'view' => 'Can see available permissions',
-                'assign' => 'Can assign permissions to users',
             ]),
             'users' => collect([
                 'view' => 'Can view tenant users',

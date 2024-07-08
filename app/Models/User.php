@@ -60,7 +60,7 @@ class User extends Authenticatable
     /**
      * Get all of the pivotTenants for the User
      *
-     * @return \MongoDB\Laravel\Relations\HasMany
+     * @return HasMany
      */
     public function pivotTenants(): HasMany
     {

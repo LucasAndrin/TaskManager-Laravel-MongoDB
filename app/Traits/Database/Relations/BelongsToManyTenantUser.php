@@ -8,14 +8,14 @@ use MongoDB\Laravel\Relations\BelongsToMany;
 
 /**
  * @property array<int, string> $tenant_user_ids
- * @method \MongoDB\Laravel\Eloquent\Builder tenatUserIds(array $userIds)
+ * @method Builder tenatUserIds(array $userIds)
  */
 trait BelongsToManyTenantUser
 {
     /**
      * The users that belong to the model
      *
-     * @return \MongoDB\Laravel\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function tenantUsers(): BelongsToMany
     {

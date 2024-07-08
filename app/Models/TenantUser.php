@@ -13,7 +13,7 @@ use MongoDB\Laravel\Eloquent\SoftDeletes;
 
 /**
  * @property-read string $id
- * @method \MongoDB\Laravel\Eloquent\Builder permissionAlias(string $alias)
+ * @method Builder permissionAlias(string $alias)
  */
 class TenantUser extends Model
 {

@@ -8,14 +8,14 @@ use MongoDB\Laravel\Relations\BelongsTo;
 
 /**
  * @property string $tenant_id
- * @method \MongoDB\Laravel\Eloquent\Builder tenantId(string $tenantId)
+ * @method Builder tenantId(string $tenantId)
  */
 trait BelongsToTenant
 {
     /**
      * Get the tenant that owns the BelongsToTenant
      *
-     * @return \MongoDB\Laravel\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function tenant(): BelongsTo
     {

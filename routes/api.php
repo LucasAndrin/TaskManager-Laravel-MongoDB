@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TenantController;
 use App\Http\Middleware\TenantMiddleware;
@@ -8,6 +9,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(TenantMiddleware::class)->group(function () {
+        Route::controller(PermissionController::class)->prefix('permissions')->group(function () {
+            Route::get('', 'index')->name('permissions.index');
+        });
+
         Route::controller(RoleController::class)->prefix('roles')->group(function () {
             Route::get('', 'index')->name('roles.index');
             Route::post('', 'store')->name('roles.store');

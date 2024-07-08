@@ -8,15 +8,15 @@ use MongoDB\Laravel\Relations\BelongsToMany;
 
 /**
  * @property array<int, string> $role_ids
- * @method \MongoDB\Laravel\Eloquent\Builder roleIds(array $roleIds)
- * @method \MongoDB\Laravel\Eloquent\Builder roleAlias(array $alias)
+ * @method Builder roleIds(array $roleIds)
+ * @method Builder roleAlias(array $alias)
  */
 trait BelongsToManyRole
 {
     /**
      * The roles that belong to the model
      *
-     * @return \MongoDB\Laravel\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function roles(): BelongsToMany
     {

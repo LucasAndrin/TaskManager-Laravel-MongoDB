@@ -8,15 +8,15 @@ use MongoDB\Laravel\Relations\BelongsTo;
 
 /**
  * @property string $user_id
- * @method \MongoDB\Laravel\Eloquent\Builder userId(string $userId)
- * @method \MongoDB\Laravel\Eloquent\Builder userIds(array $userIds)
+ * @method Builder userId(string $userId)
+ * @method Builder userIds(array $userIds)
  */
 trait BelongsToUser
 {
     /**
      * Get the user that owns the BelongsToUser
      *
-     * @return \MongoDB\Laravel\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
