@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Permission;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Repositories\TenantRepositoryInterface;
@@ -27,10 +28,15 @@ class TenantService
             'alias' => 'admin'
         ]);
 
-        $this->tenants->createPivotUser($tenant, [
+        $role->permissions()->sync(
+            Permission::pluck('_id')->toArray()
+        );
+
+        $pivotUser = $this->tenants->createPivotUser($tenant, [
             'user_id' => $user->id,
-            'role_ids' => [$role->id]
         ]);
+
+        $pivotUser->roles()->attach($role);
 
         return $tenant;
     }

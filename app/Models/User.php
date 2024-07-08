@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use MongoDB\Laravel\Relations\HasMany;
 
 /**
- * @property-read int $id
+ * @property-read string $id
  * @property string $name
  * @property string $email
  * @property string $password
@@ -54,5 +55,34 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get all of the pivotTenants for the User
+     *
+     * @return \MongoDB\Laravel\Relations\HasMany
+     */
+    public function pivotTenants(): HasMany
+    {
+        return $this->hasMany(TenantUser::class);
+    }
+
+    /**
+     * Check if auth user has permission by it alias
+     *
+     * @param string $alias permission alias
+     * @param null|integer|string|null $tenantId
+     * @return boolean
+     */
+    public function hasPermission(string $alias, null|int|string $tenantId = null)
+    {
+        if (! $tenantId) {
+            $tenantId = request()->header('X-Tenant-ID');
+        }
+
+        return $this->pivotTenants()
+            ->permissionAlias($alias)
+            ->tenantId($tenantId)
+            ->exists();
     }
 }

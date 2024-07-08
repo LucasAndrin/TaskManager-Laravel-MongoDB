@@ -31,11 +31,5 @@ class TenantSeeder extends Seeder
             'password' => '1234',
             'domain' => 'admin',
         ]);
-
-        $this->tenantService->store($admin, [
-            'name' => 'Tenant Admin 2',
-            'password' => '1234',
-            'domain' => 'admin2',
-        ]);
     }
 }

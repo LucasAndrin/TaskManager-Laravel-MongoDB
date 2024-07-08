@@ -7,14 +7,21 @@ use App\Traits\Database\Relations\BelongsToManyRole;
 use App\Traits\Database\Relations\BelongsToUser;
 use App\Traits\Database\Relations\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use MongoDB\Laravel\Eloquent\Builder;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
 
+/**
+ * @property-read string $id
+ * @method \MongoDB\Laravel\Eloquent\Builder permissionAlias(string $alias)
+ */
 class TenantUser extends Model
 {
     use HasFactory, SoftDeletes;
-    use BelongsToUser, BelongsToTenant;
-    use BelongsToManyRole, BelongsToManyPermission;
+    use BelongsToUser;
+    use BelongsToTenant;
+    use BelongsToManyRole;
+    use BelongsToManyPermission;
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +29,15 @@ class TenantUser extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'tenant_id',
         'user_id',
+        'tenant_id',
     ];
+
+    public function scopePermissionAlias(Builder $query, string $alias): void
+    {
+        $query->where(function (Builder $query) use ($alias) {
+            $query->whereHas('permissions', fn ($q) => $q->alias($alias))
+                ->orWhereHas('roles', fn ($q) => $q->permissionAlias($alias));
+        });
+    }
 }

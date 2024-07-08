@@ -16,7 +16,6 @@ class PermissionSeeder extends Seeder
         $resources = collect([
             'permissios' => collect([
                 'view' => 'Can see available permissions',
-                'attach' => 'Can attach permissions to roles',
                 'assign' => 'Can assign permissions to users',
             ]),
             'users' => collect([
@@ -28,8 +27,9 @@ class PermissionSeeder extends Seeder
                 'view' => 'Can view tenant roles',
                 'store' => 'Can store tenant roles',
                 'update' => 'Can update tenant roles',
-                'assign' => 'Can assign tenant roles',
                 'destroy' => 'Can destroy tenant roles',
+                'assign' => 'Can assign tenant roles to users',
+                'allow' => 'Can allow tenant roles to permissions',
             ]),
             'tasks' => collect([
                 'view' => 'Can view tasks',
