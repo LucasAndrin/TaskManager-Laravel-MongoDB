@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Check if composer.json exists
 if [ -f composer.json ]; then
