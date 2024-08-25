@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\Scopes\ScopeId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Builder;
 use MongoDB\Laravel\Eloquent\Model;
@@ -11,7 +10,6 @@ use MongoDB\Laravel\Relations\HasMany;
 class Tenant extends Model
 {
     use HasFactory;
-    use ScopeId;
 
     /**
      * The attributes that are mass assignable.
