@@ -39,6 +39,8 @@ class TenantService
         $tenant = Tenant::create($tenantData);
 
         /**
+         * Create default role for tenant
+         *
          * @var Role
          */
         $role = $tenant->roles()->create([
@@ -46,12 +48,15 @@ class TenantService
             'alias' => 'admin'
         ]);
 
+        /**
+         * Assign all permissions to default role
+         */
         $role->permissions()->sync(
             Permission::pluck('_id')->toArray()
         );
 
         /**
-         * @var TenantUser
+         * @var \App\Models\TenantUser
          */
         $pivotUser = $tenant->pivotUsers()->create([
             'user_id' => $user->id,

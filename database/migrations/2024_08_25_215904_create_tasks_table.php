@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\TenantUser;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 use MongoDB\Laravel\Schema\Blueprint;
@@ -11,9 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('permissions', function (Blueprint $collection) {
-            $collection->unique('name');
-            $collection->unique('alias');
+        Schema::create('tasks', function (Blueprint $collection) {
+            $collection->index('creator_id');
+            $collection->index('assigner_id');
+            $collection->index('executer_id');
         });
     }
 
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('permissions');
+        Schema::dropIfExists('tasks');
     }
 };

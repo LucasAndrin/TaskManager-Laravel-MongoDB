@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tenant_users', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Tenant::class)->index();
-            $table->foreignIdFor(User::class)->index();
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::create('tenant_users', function (Blueprint $collection) {
+            $collection->index('tenant_id');
+            $collection->index('user_id');
         });
     }
 

@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tenants', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('password');
-            $table->string('domain')->unique();
-            $table->timestamps();
+        Schema::create('tenants', function (Blueprint $collection) {
+            $collection->index('name');
+            $collection->unique('domain');
         });
     }
 

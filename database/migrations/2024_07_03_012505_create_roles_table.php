@@ -12,13 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Tenant::class)->index();
-            $table->string('name')->index();
-            $table->string('alias')->index();
-            $table->text('description')->nullable();
-            $table->timestamps();
+        Schema::create('roles', function (Blueprint $collection) {
+            $collection->index('tenant_id');
+            $collection->index('alias');
+            $collection->index('name');
         });
     }
 
