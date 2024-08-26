@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Enums\TaskStatus;
 use App\Traits\Database\Relations\BelongsTo\Tenant\BelongsToTenant;
-use App\Traits\Database\Relations\EmbedsOne\TenantUser\EmbedsOneTenantAssigner;
 use App\Traits\Database\Relations\EmbedsOne\TenantUser\EmbedsOneTenantCreator;
+use App\Traits\Database\Relations\EmbedsOne\TenantUser\EmbedsOneTenantAssigner;
 use App\Traits\Database\Relations\EmbedsOne\TenantUser\EmbedsOneTenantExecuter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
@@ -24,8 +24,8 @@ class Task extends Model
 {
     use HasFactory, SoftDeletes;
     use BelongsToTenant;
-    use EmbedsOneTenantAssigner;
     use EmbedsOneTenantCreator;
+    use EmbedsOneTenantAssigner;
     use EmbedsOneTenantExecuter;
 
     /** @inheritDoc */
@@ -48,5 +48,12 @@ class Task extends Model
         return [
             'status' => TaskStatus::class
         ];
+    }
+
+    public function isChanger(User $user): bool
+    {
+        return $this->creator()->is($user)
+            || $this->executer()->is($user)
+            || $this->assigner()->is($user);
     }
 }
