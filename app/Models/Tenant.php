@@ -7,6 +7,17 @@ use MongoDB\Laravel\Eloquent\Builder;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Relations\HasMany;
 
+/**
+ * @property-read string $id
+ * @property string $name
+ * @property string $domain
+ * @property string $password
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon $deleted_at
+ *
+ * @method Builder userId(Builder $query, string $userId)
+ */
 class Tenant extends Model
 {
     use HasFactory;
@@ -59,6 +70,16 @@ class Tenant extends Model
     public function secureRoles(): HasMany
     {
         return $this->roles()->whereNot('alias', 'admin');
+    }
+
+    /**
+     * Get all of the tasks for the Tenant
+     *
+     * @return HasMany
+     */
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
     }
 
     /**

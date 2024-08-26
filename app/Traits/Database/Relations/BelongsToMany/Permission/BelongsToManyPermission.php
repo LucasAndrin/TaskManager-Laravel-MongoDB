@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Database\Relations;
+namespace App\Traits\Database\Relations\BelongsToMany\Permission;
 
 use App\Models\Permission;
 use MongoDB\Laravel\Eloquent\Builder;

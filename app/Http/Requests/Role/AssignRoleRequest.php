@@ -18,7 +18,7 @@ class AssignRoleRequest extends FormRequest
     {
         return [
             'user_ids' => ['required', 'array'],
-            'user_ids.*' => ['required'],
+            'user_ids.*' => ['required', 'string'],
         ];
     }
 }

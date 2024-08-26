@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Database\Relations;
+namespace App\Traits\Database\Relations\BelongsTo\User;
 
 use App\Models\User;
 use App\Traits\Database\Scopes\ScopeUserId;

@@ -18,7 +18,7 @@ class AllowRoleRequest extends FormRequest
     {
         return [
             'permission_ids' => ['required', 'array'],
-            'permission_ids.*' => ['required']
+            'permission_ids.*' => ['required', 'string']
         ];
     }
 }

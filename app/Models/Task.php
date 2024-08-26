@@ -3,23 +3,41 @@
 namespace App\Models;
 
 use App\Enums\TaskStatus;
+use App\Traits\Database\Relations\BelongsTo\Tenant\BelongsToTenant;
+use App\Traits\Database\Relations\EmbedsOne\TenantUser\EmbedsOneTenantAssigner;
+use App\Traits\Database\Relations\EmbedsOne\TenantUser\EmbedsOneTenantCreator;
+use App\Traits\Database\Relations\EmbedsOne\TenantUser\EmbedsOneTenantExecuter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
-use MongoDB\Laravel\Relations\BelongsTo;
-use MongoDB\Laravel\Relations\EmbedsOne;
 
+/**
+ * @property-read string $id
+ * @property string $name
+ * @property TaskStatus $status
+ * @property string $description
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon $deleted_at
+ */
 class Task extends Model
 {
     use HasFactory, SoftDeletes;
+    use BelongsToTenant;
+    use EmbedsOneTenantAssigner;
+    use EmbedsOneTenantCreator;
+    use EmbedsOneTenantExecuter;
 
     /** @inheritDoc */
     protected $fillable = [
+        'tenant_id',
         'creator_id',
+        'executer_id',
         'assigner_id',
         'name',
         'status',
         'creator',
+        'executer',
         'assigner',
         'description',
     ];
@@ -30,64 +48,5 @@ class Task extends Model
         return [
             'status' => TaskStatus::class
         ];
-    }
-
-    /**
-     * Get the creator of the Task
-     *
-     * @return BelongsTo
-     */
-    public function creator(): BelongsTo
-    {
-        return $this->belongsTo(TenantUser::class, 'creator_id');
-    }
-
-    /**
-     * Get the embed creator of the Task
-     *
-     * @return BelongsTo
-     */
-    public function embedCreator(): EmbedsOne
-    {
-        return $this->embedsOne(TenantUser::class, 'creator');
-    }
-
-    /**
-     * Get the assigner of the Task
-     * @return BelongsTo
-     */
-    public function assigner(): BelongsTo
-    {
-        return $this->belongsTo(TenantUser::class, 'assigner_id');
-    }
-
-    /**
-     * Get the embed assigner of the Task
-     *
-     * @return BelongsTo
-     */
-    public function embedAssigner(): EmbedsOne
-    {
-        return $this->embedsOne(TenantUser::class, 'assigner');
-    }
-
-    /**
-     * Get the executer of the Task
-     *
-     * @return BelongsTo
-     */
-    public function executer(): BelongsTo
-    {
-        return $this->belongsTo(TenantUser::class, 'tenant_creator_id');
-    }
-
-    /**
-     * Get the embed executer of the Task
-     *
-     * @return BelongsTo
-     */
-    public function embedExecuter(): EmbedsOne
-    {
-        return $this->embedsOne(TenantUser::class, 'executer');
     }
 }

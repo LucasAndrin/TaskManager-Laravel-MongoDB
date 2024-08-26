@@ -28,11 +28,11 @@ class RoleService
     }
 
     /**
-     * Checks if user can create a role and
-     * create it
+     * Checks if user can create a role and create it
      *
      * @param User $user
      * @param Tenant $tenant
+     * @param array<string, mixed> $roleData
      * @return Role Created role
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -73,9 +73,7 @@ class RoleService
     {
         Gate::forUser($user)->authorize('update', Role::class);
 
-        /**
-         * @var Role
-         */
+        /** @var Role */
         $role = $tenant->secureRoles()->findOrFail($roleId);
 
         return $role->update($roleData);
@@ -112,14 +110,10 @@ class RoleService
     {
         Gate::forUser($user)->authorize('assign', Role::class);
 
-        /**
-         * @var Role
-         */
+        /** @var Role */
         $role = $tenant->roles()->findOrFail($roleId);
 
-        /**
-         * @var Collection<int, TenantUser>
-         */
+        /** @var Collection<int, TenantUser> */
         $pivotUserIds = $tenant->pivotUsers()
             ->userIds($userIds)
             ->pluck('_id');
@@ -144,9 +138,7 @@ class RoleService
     {
         Gate::forUser($user)->authorize('allow', Role::class);
 
-        /**
-         * @var Role
-         */
+        /** @var Role */
         $role = $tenant->secureRoles()->findOrFail($roleId);
 
         return $role->permissions()->sync($permissionIds);

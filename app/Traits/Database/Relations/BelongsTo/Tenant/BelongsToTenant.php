@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Database\Relations;
+namespace App\Traits\Database\Relations\BelongsTo\Tenant;
 
 use App\Models\Tenant;
 use MongoDB\Laravel\Eloquent\Builder;

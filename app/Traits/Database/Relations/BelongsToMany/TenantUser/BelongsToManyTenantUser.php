@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Database\Relations;
+namespace App\Traits\Database\Relations\BelongsToMany\TenantUser;
 
 use App\Models\User;
 use MongoDB\Laravel\Eloquent\Builder;

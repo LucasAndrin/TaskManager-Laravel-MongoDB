@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use App\Traits\Database\Relations\BelongsToManyPermission;
-use App\Traits\Database\Relations\BelongsToManyTenantUser;
-use App\Traits\Database\Relations\BelongsToTenant;
+use App\Traits\Database\Relations\BelongsToMany\Permission\BelongsToManyPermission;
+use App\Traits\Database\Relations\BelongsToMany\TenantUser\BelongsToManyTenantUser;
+use App\Traits\Database\Relations\BelongsTo\Tenant\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Builder;
 use MongoDB\Laravel\Eloquent\Model;
 
 /**
  * @property-read string $id
- * @property string $tenant_id
  * @property string $name
  * @property string $alias
  * @property string $description
