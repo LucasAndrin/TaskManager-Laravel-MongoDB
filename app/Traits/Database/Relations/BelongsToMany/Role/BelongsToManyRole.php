@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Database\Relations\BelognsToMany\Role;
+namespace App\Traits\Database\Relations\BelongsToMany\Role;
 
 use App\Models\Role;
 use MongoDB\Laravel\Eloquent\Builder;

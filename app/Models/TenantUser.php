@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\Database\Relations\BelognsToMany\Role\BelongsToManyRole;
+use App\Traits\Database\Relations\BelongsToMany\Role\BelongsToManyRole;
 use App\Traits\Database\Relations\BelongsToMany\Permission\BelongsToManyPermission;
 use App\Traits\Database\Relations\BelongsTo\User\BelongsToUser;
 use App\Traits\Database\Relations\BelongsTo\Tenant\BelongsToTenant;
