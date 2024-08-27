@@ -34,8 +34,8 @@ class PermissionSeeder extends Seeder
                 'store' => 'Can store tasks',
                 'update' => 'Can update tasks',
                 'assign' => 'Can assign tasks',
-                'destroy' => 'Can destroy tasks',
-                'execute' => 'Can execute tasks'
+                'execute' => 'Can execute tasks',
+                'destroy' => 'Can destroy tasks'
             ])
         ]);
 

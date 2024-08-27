@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Task\AssignTaskRequest;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Http\Requests\TenantRequest;
@@ -72,9 +73,9 @@ class TaskController extends Controller
      *
      * @param UpdateTaskRequest $request
      * @param string $taskId
-     * @return void
+     * @return JsonResponse
      */
-    public function update(UpdateTaskRequest $request, string $taskId)
+    public function update(UpdateTaskRequest $request, string $taskId): JsonResponse
     {
         $updated = $this->service->update(
             $request->user(),
@@ -84,6 +85,26 @@ class TaskController extends Controller
         );
 
         return response()->json($updated);
+    }
+
+    /**
+     * Assign tenant task
+     *
+     * @param AssignTaskRequest
+     * @param string $taskId
+     * @param string $executerId
+     * @return JsonResponse
+     */
+    public function assign(AssignTaskRequest $request, string $taskId, string $executerId): JsonResponse
+    {
+        $assigned = $this->service->assign(
+            $request->user(),
+            $request->tenant(),
+            $taskId,
+            $executerId
+        );
+
+        return response()->json($assigned);
     }
 
     /**

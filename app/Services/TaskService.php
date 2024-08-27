@@ -27,11 +27,11 @@ class TaskService
         }
 
         return $tenant->tasks()->where(function (Builder $query) use ($user) {
-            $query->creatorId($user->id)
+            $query->creatorId($user->pivotTenant->id)
                 ->orWhere(function (Builder $query) use ($user) {
-                    $query->assinerId($user->id);
+                    $query->assinerId($user->pivotTenant->id);
                 })->orWhere(function (Builder $query) use ($user) {
-                    $query->executerId($user->id);
+                    $query->executerId($user->pivotTenant->id);
                 });
         });
     }
@@ -53,15 +53,17 @@ class TaskService
 
         /** @var Task */
         $task = $tenant->tasks()->make($taskData);
-        $task->creator()->associate($user);
+
+        $task->creator()->associate($user->pivotTenant);
 
         /**
          * If has a task executer, save it and associate $user as assigner of the task
          */
         if (Arr::has($taskData, 'executer_id')) {
+            /** @var TenantUser */
             $executer = $tenant->pivotUsers()->findOrFail($taskData['executer_id']);
 
-            $task->assigner()->associate($user);
+            $task->assigner()->associate($user->pivotTenant);
             $task->executer()->associate($executer);
         }
 
@@ -108,6 +110,23 @@ class TaskService
         Gate::forUser($user)->authorize('update', $task);
 
         return $task->update($taskData);
+    }
+
+
+    public function assign(User $user, Tenant $tenant, string $taskId, string $executerId): bool
+    {
+        /** @var Task */
+        $task = $tenant->tasks()->findOrFail($taskId);
+
+        Gate::forUser($user)->authorize('assign', $task);
+
+        /** @var TenantUser */
+        $executer = $tenant->pivotUsers()->findOrFail($executerId);
+
+        $task->assigner()->associate($user->pivotTenant);
+        $task->executer()->associate($executer);
+
+        return $task->save();
     }
 
     /**

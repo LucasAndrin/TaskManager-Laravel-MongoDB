@@ -6,7 +6,7 @@ use App\Traits\SerializePivotTenant;
 use App\Traits\TenantRequestTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTaskRequest extends FormRequest
+class AssignTaskRequest extends FormRequest
 {
     use TenantRequestTrait;
     use SerializePivotTenant;
@@ -19,9 +19,7 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'string', 'min:3'],
-            'executer_id' => ['nullable', 'string'],
-            'description' => ['nullable', 'string', 'max:255'],
+            //
         ];
     }
 }

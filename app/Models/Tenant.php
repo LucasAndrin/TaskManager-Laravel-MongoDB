@@ -16,7 +16,7 @@ use MongoDB\Laravel\Relations\HasMany;
  * @property \Illuminate\Support\Carbon $updated_at
  * @property \Illuminate\Support\Carbon $deleted_at
  *
- * @method Builder userId(Builder $query, string $userId)
+ * @method static Builder userId(Builder $query, string $userId)
  */
 class Tenant extends Model
 {

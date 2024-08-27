@@ -50,10 +50,10 @@ class Task extends Model
         ];
     }
 
-    public function isChanger(User $user): bool
+    public function isChanger(TenantUser $pivotUser): bool
     {
-        return $this->creator()->is($user)
-            || $this->executer()->is($user)
-            || $this->assigner()->is($user);
+        return $this->creator()->is($pivotUser)
+            || $this->executer()->is($pivotUser)
+            || $this->assigner()->is($pivotUser);
     }
 }

@@ -9,9 +9,9 @@ trait TenantRequestTrait
     /**
      * Get tenant id from request
      *
-     * @return null|integer|string
+     * @return null|string
      */
-    public function tenantId(): null|int|string
+    public function tenantId(): null|string
     {
         return $this->header('X-Tenant-ID');
     }
@@ -19,9 +19,9 @@ trait TenantRequestTrait
     /**
      * Get tenant from request
      *
-     * @return Tenant|null
+     * @return Tenant
      */
-    public function tenant(): ?Tenant
+    public function tenant(): Tenant
     {
         return $this->input('tenant');
     }

@@ -18,7 +18,7 @@ class TaskPolicy
      */
     public function view(User $user, ?Task $task = null): bool
     {
-        return $task?->isChanger($user)
+        return $task?->isChanger($user->pivotTenant)
             || $user->hasPermission('tasks.view');
     }
 
@@ -41,7 +41,7 @@ class TaskPolicy
      */
     public function update(User $user, ?Task $task = null): bool
     {
-        return $task?->isChanger($user)
+        return $task?->isChanger($user->pivotTenant)
             || $user->hasPermission('tasks.update');
     }
 
@@ -75,7 +75,7 @@ class TaskPolicy
      */
     public function execute(User $user, ?Task $task = null): bool
     {
-        return $task?->executer()->is($user)
+        return $task?->executer()->is($user->pivotTenant)
             || $user->hasPermission('tasks.execute');
     }
 }

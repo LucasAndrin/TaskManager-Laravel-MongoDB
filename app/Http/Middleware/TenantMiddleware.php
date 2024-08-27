@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Requests\TenantRequest;
 use App\Models\Tenant;
 use Closure;
 use Illuminate\Http\Request;
@@ -16,6 +17,8 @@ class TenantMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $request = TenantRequest::createFrom($request);
+
         $tenant = $this->resolveTenant($request);
 
         $request->merge([
@@ -31,9 +34,9 @@ class TenantMiddleware
      * @param Request $request
      * @return Tenant
      */
-    protected function resolveTenant(Request $request): Tenant
+    protected function resolveTenant(TenantRequest $request): Tenant
     {
-        $tenantId = $request->header('X-Tenant-ID');
+        $tenantId = $request->tenantId();
 
         return Tenant::userId(
             $request->user()->id

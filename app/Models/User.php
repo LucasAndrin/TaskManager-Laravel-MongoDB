@@ -8,6 +8,7 @@ use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use MongoDB\Laravel\Relations\HasMany;
+use MongoDB\Laravel\Relations\HasOne;
 
 /**
  * @property-read string $id
@@ -18,6 +19,8 @@ use MongoDB\Laravel\Relations\HasMany;
  * @property \Illuminate\Support\Carbon $email_verified_at
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
+ *
+ * @property \App\Models\TenantUser $pivotTenant
  */
 class User extends Authenticatable
 {
@@ -56,6 +59,17 @@ class User extends Authenticatable
     }
 
     /**
+     * Get TenantUser of Tenant's request
+     *
+     * @return HasOne
+     */
+    public function pivotTenant(): HasOne
+    {
+        return $this->hasOne(TenantUser::class)
+            ->tenantId(request()->tenantId());
+    }
+
+    /**
      * Check if user has permission by alias
      *
      * @param string $alias permission alias
@@ -65,11 +79,10 @@ class User extends Authenticatable
     public function hasPermission(string $alias, ?string $tenantId = null)
     {
         if (! $tenantId) {
-            $tenantId = request()->header('X-Tenant-ID');
+            $tenantId = request()->tenantId();
         }
 
-        return $this->pivotTenants()
-            ->permissionAlias($alias)
+        return $this->pivotTenant->permissionAlias($alias)
             ->tenantId($tenantId)
             ->exists();
     }
@@ -84,7 +97,7 @@ class User extends Authenticatable
     public function hasRole(string $alias, ?string $tenantId = null)
     {
         if (! $tenantId) {
-            $tenantId = request()->header('X-Tenant-ID');
+            $tenantId = request()->tenantId();
         }
 
         return $this->pivotTenants()
