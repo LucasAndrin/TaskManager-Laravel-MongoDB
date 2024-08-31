@@ -12,7 +12,6 @@ if [ -f artisan ]; then
     php artisan storage:link
     php artisan migrate
     php artisan optimize
-    php artisan view:cache
 else
     echo "artisan not found. Skipping Laravel commands."
 fi
